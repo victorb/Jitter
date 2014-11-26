@@ -1,6 +1,6 @@
 console.log('Lets figure out the jitter of this network connection');
 
-interval = 0.05
+var interval = 0.05
 if(process.argv[2] !== undefined) {
   interval = process.argv[2];
 }
@@ -72,7 +72,7 @@ function execSpark() {
 function countAverage(values) {
 	var sum = 0;
 	for( var i = 0; i < values.length; i++ ){
-			sum += parseInt( values[i], 10 ); //don't forget to add the base
+	  sum += parseInt( values[i], 10 ); //don't forget to add the base
 	}
 	var avg = sum/values.length;
 	return Math.round(avg);
@@ -103,11 +103,11 @@ function addToPingValues(value) {
 
 cmd.stdout.on('data', function(data) {
   var delay = data.toString().split(' ')[6].split('=')[1];
-	var difference = timeSinceLast();
-	//console.log('Delay: ' + delay + 'ms | Diff: ' + difference + 'ms');
-	addToJitterValues(difference);
-	addToPingValues(delay);
-	execSpark('hello');
+  var difference = timeSinceLast();
+  //console.log('Delay: ' + delay + 'ms | Diff: ' + difference + 'ms');
+  addToJitterValues(difference);
+  addToPingValues(delay);
+  execSpark('hello');
 });
 
 cmd.stderr.on('data', function(data) {
