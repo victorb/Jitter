@@ -1,8 +1,14 @@
+var sparkly = require('sparkly');
+
 console.log('Lets figure out the jitter of this network connection');
 
 var interval = 0.05;
 if(process.argv[2] !== undefined) {
   interval = process.argv[2];
+}
+var site = "https://www.google.com";
+if(process.argv[3] !== undefined) {
+	site = process.argv[3];
 }
 
 var spawn = require('child_process').spawn;
@@ -13,7 +19,6 @@ var prevMessage = new Date();
 var thisMessage = new Date();
 
 function timeSinceLast() {
-	//console.log(prevMessage.getTime() - thisMessage.getTime());
 	var newValue = thisMessage.getTime() - prevMessage.getTime();
 	prevMessage = thisMessage;
 	thisMessage = new Date();
@@ -21,9 +26,6 @@ function timeSinceLast() {
 }
 
 function execSpark() {
-	var sys = require('sys');
-	var exec = require('child_process').exec;
-	var stringOfJitterValues = jitterValues.concat(' ');
 	var jitterGraph = null;
 	var pingGraph = null;
 	function done(_jitterGraph, _pingGraph) {
@@ -58,15 +60,9 @@ function execSpark() {
 			console.log("");
 			console.log("Source: https://www.github.com/VictorBjelkholm/Jitter");
 		}
-	
 	}
-	exec("/home/victor/bin/spark " + stringOfJitterValues, function(error, stdout, stderr) {
-		done(stdout, null);
-	});
-	var stringOfPingValues = pingValues.concat(' ');
-	exec("/home/victor/bin/spark " + stringOfPingValues, function(error, stdout, stderr) {
-		done(null, stdout);
-	});
+	done(sparkly(jitterValues), null);
+	done(null, sparkly(pingValues));
 }
 
 function countAverage(values) {
@@ -97,17 +93,16 @@ function addToPingValues(value) {
 		pingValues.shift();
 	}
 	if(value !== null && value !== undefined) {
-		pingValues.push(value);
+		pingValues.push(parseInt(value));
 	}
 }
 
 cmd.stdout.on('data', function(data) {
   var delay = data.toString().split(' ')[6].split('=')[1];
   var difference = timeSinceLast();
-  //console.log('Delay: ' + delay + 'ms | Diff: ' + difference + 'ms');
   addToJitterValues(difference);
   addToPingValues(delay);
-  execSpark('hello');
+  execSpark();
 });
 
 cmd.stderr.on('data', function(data) {
