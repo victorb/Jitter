@@ -1,6 +1,6 @@
 console.log('Lets figure out the jitter of this network connection');
 
-var interval = 0.05
+var interval = 0.05;
 if(process.argv[2] !== undefined) {
   interval = process.argv[2];
 }
@@ -21,7 +21,7 @@ function timeSinceLast() {
 }
 
 function execSpark() {
-	var sys = require('sys')
+	var sys = require('sys');
 	var exec = require('child_process').exec;
 	var stringOfJitterValues = jitterValues.concat(' ');
 	var jitterGraph = null;
@@ -40,7 +40,7 @@ function execSpark() {
 			currentPing = pingValues[pingValues.length - 1];
 
 			console.log('\u001B[2J\u001B[0;0f');
-			console.log("    This is the performance of your network")
+			console.log("    This is the performance of your network");
 			console.log();
 			console.log("\033[34m");
 			console.log("Jitter:\t(Current: "+currentJitter+"ms)  \t(Average: "+averageJitter+"ms)");
@@ -51,7 +51,7 @@ function execSpark() {
 			console.log("\033[32m");
 			console.log(pingGraph);
 			console.log("\033[33m");
-			console.log("With a good connection, these values should be as low as possible and the graph should move as smoothly as possible while it should also look as straight as possible.")
+			console.log("With a good connection, these values should be as low as possible and the graph should move as smoothly as possible while it should also look as straight as possible.");
 			console.log("\033[0m");
 			console.log("Created by Victor Bjelkholm under MIT license 2014");
 			console.log("https://www.twitter.com/VictorBjelkholm");
@@ -88,7 +88,7 @@ function addToJitterValues(value) {
 		jitterValues.shift();
 	}
 	if(value !== null && value !== undefined) {
-		jitterValues.push(value)
+		jitterValues.push(value);
 	}
 }
 
@@ -97,7 +97,7 @@ function addToPingValues(value) {
 		pingValues.shift();
 	}
 	if(value !== null && value !== undefined) {
-		pingValues.push(value)
+		pingValues.push(value);
 	}
 }
 
